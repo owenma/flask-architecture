@@ -1,0 +1,22 @@
+<!doctype html>
+<title>Todo List</title>
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }} ">
+<div class=page>
+  <h1>任务清单</h1>
+  <div class=metanav>
+  {% if not session.logged_in %}
+    <a href="{{ url_for('todo.login') }}">登录</a>
+  {% else %}
+    <a href="{{ url_for('todo.logout') }}">注销</a>
+  {% endif %}
+  {% if current_user.is_authenticated  %}
+       {{ current_user.username }}
+  {% else %}
+    none
+ {% endif %}
+  </div>
+  {% for message in get_flashed_messages() %}
+    <div class=flash>{{ message }}</div>
+  {% endfor %}
+  {% block body %}{% endblock %}
+</div>

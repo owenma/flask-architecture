@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block body %}
+  {% if session.logged_in %}
+    <form action="{{ url_for('todo.add_entry') }}" method=post class=add-entry>
+      <dl>
+        <dt>标题:
+        <dd><input type=text size=30 name=title>
+        <dt>内容:
+        <dd><textarea name=text rows=5 cols=40></textarea>
+        <dd><input type=submit value=添加>
+      </dl>
+    </form>
+  {% endif %}
+  <ul class=entries>
+  {% for entry in entries %}
+    <li><h2>{{ entry.title }}  <a href="{{ url_for('todo.delete') }}?id={{ entry.id }}">移除</a></h2>{{ entry.text|safe }}
+
+  {% else %}
+    <li><em>暂无内容！</em>
+  {% endfor %}
+  </ul>
+{% endblock %}
