@@ -1,10 +1,9 @@
 import config.settings
 
-from flask import Flask, redirect
+from flask import Flask
 from flask_script import Manager
-from flask_login import LoginManager
-from apps.todo.models import db, User
 from apps.todo.views.todo import todo
+from apps.todo.views.todo import login_manager
 app = Flask(__name__)
 # 装载配置
 app.debug = config.settings.DEBUG
@@ -17,24 +16,15 @@ db.init_app(app)
 db.create_all()
 
 manager = Manager(app)
-
-login_manager = LoginManager()
+login_manager.login_view = 'todo.login'
 login_manager.init_app(app)
 
 # 注册路由
 # register_view(app)
+
 app.register_blueprint(todo, url_prefix='/todo')
 
 
-@login_manager.user_loader
-def load_user(id):
-    if id is None:
-        redirect('/login')
-    user = User.query.filter(User.id == id).first()
-    if user:
-        return user
-    else:
-        return None
 
 
 if __name__ == '__main__':

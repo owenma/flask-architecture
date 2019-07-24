@@ -7,10 +7,24 @@ from flask import url_for
 from flask import session
 from flask import abort
 from apps.todo.views.forms import LoginForm, TodoForm
-from flask_login import login_user, login_required, logout_user
+from flask_login import login_user, login_required, logout_user, LoginManager
 from apps.todo.models import Todo, User, db
 
+
+login_manager = LoginManager()
+
 todo = Blueprint('todo', __name__)
+
+
+@login_manager.user_loader
+def load_user(id):
+    if id is None:
+        redirect('/login')
+    user = User.query.filter(User.id == id).first()
+    if user:
+        return user
+    else:
+        return None
 
 
 @todo.route('/show_entries')
