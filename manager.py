@@ -2,6 +2,7 @@ import config.settings
 
 from flask import Flask
 from flask_script import Manager
+from apps.todo.models import db
 from apps.todo.views.todo import todo
 from apps.todo.views.todo import login_manager
 app = Flask(__name__)
